@@ -9,12 +9,12 @@
 
 ## About <a name = "about"></a>
 
-Desafio proposto pela MB Labs, no qual .
+Desafio proposto pela MB Labs. Criação de um app para gestão de eventos, onde as pessoas possam buscar e comprar ingressos de eventos de empresas ou faculdades.
 
 ### Tecnologias <a name = "tecnologias"></a>
 
 - React Native;
-- Styled-components;
+
 
 
 ## Requisitos funcionais <a name = "requisitos"></a>
