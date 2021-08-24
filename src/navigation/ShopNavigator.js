@@ -3,16 +3,26 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 
 import ProductsOverview from "../screens/shop/ProductsOverview";
+import ProductDetail from '../screens/shop/ProductsDetails';
 import Colors from '../../constants/Colors'
 
 const ProductsNavigator = createStackNavigator({
   ProductsOverview: {
     screen: ProductsOverview
-  }
+  },
+  ProductDetail: {
+    screen: ProductDetail
+  },
 }, {
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: Colors.primary
+    },
+    headerTitleStyle: {
+      fontFamily: 'open-sans-bold'
+    },
+    headerBackTitleStyle: {
+      fontFamily: 'open-sans'
     },
     headerTintColor: 'white'
   }

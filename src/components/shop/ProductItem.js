@@ -1,21 +1,32 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, Dimensions } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
 
 const ProductItem = (props) => {
+
+  let TouchComp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchComp = TouchableNativeFeedback;
+  }
+
   return (
-    <View style={styles.product}>
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: props.image }} />
+    <TouchComp onPress={props.onViewDetail} useForeground>
+      <View style={styles.product}>
+
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: props.image }} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{props.title}</Text>
+          <Text style={styles.price}>R${props.price}</Text>
+        </View>
+        <View style={styles.btns}>
+          <Button title="Details" onPress={props.onViewDetail} />
+          <Button title="ADD Cart" onPress={props.onAddCart} />
+        </View>
+
       </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.price}>R${props.price}</Text>
-      </View>
-      <View style={styles.btns}>
-        <Button title="Details" onPress={props.onViewDetail} />
-        <Button title="ADD Cart" onPress={props.onAddCart} />
-      </View>
-    </View>
+    </TouchComp>
   );
 };
 
@@ -28,8 +39,9 @@ const styles = StyleSheet.create({
     elevation: 6,
     borderRadius: 15,
     backgroundColor: '#c9ccd5',
-    height: 300,
-    margin: 20
+    height: 350,
+    margin: 15,
+    overflow: 'hidden'
   },
   imageContainer: {
     width: '100%',
@@ -52,11 +64,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    marginVertical: 4
+    marginVertical: 3,
+    fontFamily: 'open-sans-bold'
   },
   price: {
     fontSize: 14,
-
+    fontFamily: 'open-sans-bold'
   },
   btns: {
     flexDirection: 'row',
