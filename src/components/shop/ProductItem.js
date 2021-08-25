@@ -1,32 +1,31 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Button, Platform, TouchableNativeFeedback, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, Button, Platform, TouchableWithoutFeedback, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 
 const ProductItem = (props) => {
 
-  let TouchComp = TouchableOpacity;
+  let Touchable = TouchableWithoutFeedback;
 
   if (Platform.OS === 'android' && Platform.Version >= 21) {
-    TouchComp = TouchableNativeFeedback;
+    Touchable = TouchableWithoutFeedback;
   }
 
   return (
-    // {/* <TouchComp onPress={props.onViewDetail} useForeground> */}
-    <View style={styles.product}>
+    <Touchable onPress={props.onViewDetail}>
+      <View style={styles.product}>
 
-      <View style={styles.imageContainer}>
-        <Image style={styles.image} source={{ uri: props.image }} />
-      </View>
-      <View style={styles.textContainer}>
-        <Text style={styles.title}>{props.title}</Text>
-        <Text style={styles.price}>R${props.price}</Text>
-      </View>
-      <View style={styles.btns}>
-        <Button title="Details" onPress={props.onViewDetail} />
-        <Button title="ADD Cart" onPress={props.onAddCart} />
-      </View>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={{ uri: props.image }} />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{props.title}</Text>
+          <Text style={styles.price}>R${props.price}</Text>
+        </View>
+        <View style={styles.btns}>
+          {props.children}
+        </View>
 
-    </View>
-    // {/* </TouchComp> */}
+      </View>
+    </Touchable>
   );
 };
 
@@ -80,3 +79,5 @@ const styles = StyleSheet.create({
 });
 
 export default ProductItem;
+
+{/* <TouchableWithoutFeedback onPress={props.onViewDetail} useForeground> */ }

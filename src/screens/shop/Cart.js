@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import CartItem from '../../components/shop/CartItem';
 import * as cartAction from '../../../store/actions/cart'
+import * as ordersActions from '../../../store/actions/orders'
 
 const CartScreen = props => {
   const cartTotalAmount = useSelector(state => state.cart.totalAmount)
@@ -28,10 +29,13 @@ const CartScreen = props => {
         <Text style={styles.sumaryText}>
           Total: <Text style={styles.amount}>R$ {cartTotalAmount.toFixed(2)}</Text>
         </Text>
-        <Button title="Order Now" onPress={() => console.log(cartItem)} disabled={cartItem.length === 0} />
+        <Button
+          title="Order Now"
+          onPress={() => dispatch(ordersActions.addOrder(cartItem, cartTotalAmount))}
+          disabled={cartItem.length === 0} />
       </View>
       <View>
-        <FlatList data={cartItem} keyExtractor={item => item.productId} renderItem={itemData => <CartItem quantity={itemData.item.quantity} title={itemData.item.productTitle} amount={itemData.item.sum} onRemove={() => { dispatch(cartAction.removeFromCart(itemData.item.productId)) }} />
+        <FlatList data={cartItem} keyExtractor={item => item.productId} renderItem={itemData => <CartItem quantity={itemData.item.quantity} title={itemData.item.productTitle} amount={itemData.item.sum} isDeletable={true} onRemove={() => { dispatch(cartAction.removeFromCart(itemData.item.productId)) }} />
         } />
       </View>
     </View>
