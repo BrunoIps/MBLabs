@@ -10,23 +10,23 @@ const ProductItem = (props) => {
   }
 
   return (
-    <TouchComp onPress={props.onViewDetail} useForeground>
-      <View style={styles.product}>
+    // {/* <TouchComp onPress={props.onViewDetail} useForeground> */}
+    <View style={styles.product}>
 
-        <View style={styles.imageContainer}>
-          <Image style={styles.image} source={{ uri: props.image }} />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>{props.title}</Text>
-          <Text style={styles.price}>R${props.price}</Text>
-        </View>
-        <View style={styles.btns}>
-          <Button title="Details" onPress={props.onViewDetail} />
-          <Button title="ADD Cart" onPress={props.onAddCart} />
-        </View>
-
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={{ uri: props.image }} />
       </View>
-    </TouchComp>
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>{props.title}</Text>
+        <Text style={styles.price}>R${props.price}</Text>
+      </View>
+      <View style={styles.btns}>
+        <Button title="Details" onPress={props.onViewDetail} />
+        <Button title="ADD Cart" onPress={props.onAddCart} />
+      </View>
+
+    </View>
+    // {/* </TouchComp> */}
   );
 };
 

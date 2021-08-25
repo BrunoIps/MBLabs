@@ -17,7 +17,7 @@ const ProductsOverview = props => {
       keyExtractor={item => item.id}
       renderItem={itemData => <ProductItem image={itemData.item.imageUrl}
         title={itemData.item.title}
-        price={itemData.item.price}
+        price={itemData.item.price.toFixed(2)}
         onViewDetail={() => props.navigation.navigate('ProductDetail', { productId: itemData.item.id, productTitle: itemData.item.title })}
         onAddCart={() => {
           dispatch(cartActions.addToCart(itemData.item))
@@ -31,7 +31,9 @@ ProductsOverview.navigationOptions = navData => {
   return {
     headerTitle: "Products",
     headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      <Item title='Cart' iconName='md-cart' onPress={() => { }} />
+      <Item title='Cart' iconName='md-cart' onPress={() => {
+        navData.navigation.navigate('CartScreen')
+      }} />
     </HeaderButtons>
   }
 }
