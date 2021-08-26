@@ -18,7 +18,7 @@ const ProductDetail = props => {
           <Image style={styles.image} source={{ uri: selectedProduct.imageUrl }} />
         </View>
         <View style={styles.btn}>
-          <Button color={Colors.secondary} title="Add to Cart" onPress={() => {
+          <Button color={Colors.secondary} title="Adicionar no carrinho" onPress={() => {
             dispatch(cartActions.addToCart(selectedProduct))
           }} />
         </View>

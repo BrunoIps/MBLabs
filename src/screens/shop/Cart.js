@@ -30,7 +30,7 @@ const CartScreen = props => {
           Total: <Text style={styles.amount}>R$ {Math.round(cartTotalAmount.toFixed(2) * 100) / 100}</Text>
         </Text>
         <Button
-          title="Order Now"
+          title="Comprar"
           onPress={() => dispatch(ordersActions.addOrder(cartItem, cartTotalAmount))}
           disabled={cartItem.length === 0} />
       </View>
@@ -44,7 +44,7 @@ const CartScreen = props => {
 
 CartScreen.navigationOptions = navData => {
   return {
-    headerTitle: 'Your Cart'
+    headerTitle: 'Seu carrinho'
   }
 }
 

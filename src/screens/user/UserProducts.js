@@ -32,8 +32,8 @@ const UserProduct = props => {
 
   return (
     <FlatList data={userProducts} keyExtractor={item => item.id} renderItem={itemData => <ProductItem onViewDetail={() => { editProduct(itemData.item.id) }} image={itemData.item.imageUrl} title={itemData.item.title} price={itemData.item.price}>
-      <Button title="Edit" color={Colors.secondary} onPress={() => { editProduct(itemData.item.id) }} />
-      <Button title="Delete" color={Colors.secondary} onPress={() => { btnDelete(itemData.item.id) }}
+      <Button title="Editar" color={Colors.secondary} onPress={() => { editProduct(itemData.item.id) }} />
+      <Button title="Deletar" color={Colors.secondary} onPress={() => { btnDelete(itemData.item.id) }}
       />
     </ProductItem>} />
   )
@@ -41,7 +41,7 @@ const UserProduct = props => {
 
 UserProduct.navigationOptions = navData => {
   return {
-    headerTitle: "Event Manager",
+    headerTitle: "Organizador",
     headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
       <Item title='Menu' iconName='md-menu' onPress={() => {
         navData.navigation.toggleDrawer()

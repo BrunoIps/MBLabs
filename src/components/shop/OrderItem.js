@@ -12,7 +12,7 @@ const OrderItem = props => {
         <Text style={styles.date}>{props.date}</Text>
 
       </View>
-      <Button title={showDetails ? "Hide Details" : "Details"} onPress={() => {
+      <Button title={showDetails ? "Esconder Detalhes" : "Detalhes"} onPress={() => {
         setShowDetails(prevState => !prevState)
       }} />
       {showDetails && <View style={styles.detail}>

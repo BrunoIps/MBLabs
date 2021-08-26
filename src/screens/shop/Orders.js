@@ -15,6 +15,7 @@ const OrdersScreen = props => {
 
 OrdersScreen.navigationOptions = navData => {
   return {
+    headerTitle: 'Pedidos',
     headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
       <Item title='Menu' iconName='md-menu' onPress={() => {
         navData.navigation.toggleDrawer()

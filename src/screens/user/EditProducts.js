@@ -1,10 +1,38 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import React, { useEffect, useCallback, useReducer } from 'react';
+import { View, ScrollView, StyleSheet, Alert, KeyboardAvoidingView } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { useSelector, useDispatch } from 'react-redux';
 
-import HeaderButton from '../../components/UI/HeaderButton'
-import * as productAction from '../../../store/actions/products'
+import HeaderButton from '../../components/UI/HeaderButton';
+import * as productAction from '../../../store/actions/products';
+import Input from '../../components/UI/Input'
+
+const FORM_UPDATE = 'FORM_UPDATE'
+
+const formReducer = (state, action) => {
+  if (action.type === FORM_UPDATE) {
+    const updatedValue = {
+      ...state.inputValues,
+      [action.inputId]: action.value
+    }
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.inputId]: action.isValid
+    };
+    let upFormIsValid = true;
+
+    for (const key in updatedValidities) {
+      upFormIsValid = upFormIsValid && updatedValidities[key];
+    }
+
+    return {
+      formIsValid: upFormIsValid,
+      inputValues: updatedValue,
+      inputValidities: updatedValidities
+    }
+  }
+  return state;
+}
 
 const EditProductScreen = props => {
 
@@ -14,68 +42,119 @@ const EditProductScreen = props => {
 
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState(editedProduct ? editedProduct.title : '');
-  const [image, setImage] = useState(editedProduct ? editedProduct.imageUrl : '');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState(editedProduct ? editedProduct.description : '');
+  const [formState, formDispatch] = useReducer(formReducer,
+    {
+      inputValues: {
+        title: editedProduct ? editedProduct.title : '',
+        image: editedProduct ? editedProduct.imageUrl : '',
+        price: editedProduct ? editedProduct.price : '',
+        description: editedProduct ? editedProduct.description : '',
+      },
+      inputValidities: {
+        title: editedProduct ? true : false,
+        image: editedProduct ? true : false,
+        price: editedProduct ? true : false,
+        description: editedProduct ? true : false,
+      },
+      formIsValid: editedProduct ? true : false
+    })
+
 
 
 
   const submitHandler = useCallback(() => {
 
-    if (title.length <= 0 || image.length <= 0 || description.length <= 0 || price <= 0) {
+    if (!formState.formIsValid) {
       Alert.alert('Preencha todos os campos necessários', 'Verifique seus campos', [{ text: 'OK' }])
       return;
     }
 
     if (editedProduct) {
-      dispatch(productAction.editProduct(prodId, title, description, image))
+      dispatch(productAction.editProduct(prodId, formState.inputValues.title, formState.inputValues.description, formState.inputValues.image))
       props.navigation.goBack();
     } else {
-      if (price.length !== 0) {
 
-        dispatch(productAction.createProduct(title, description, image, +price))
-      }
+      dispatch(productAction.createProduct(formState.inputValues.title, formState.inputValues.description, formState.inputValues.image, +formState.inputValues.price))
+
       props.navigation.goBack();
     }
 
 
 
-  }, [dispatch, prodId, title, image, description, price])
+  }, [dispatch, prodId, formState])
 
   useEffect(() => {
     props.navigation.setParams({ submit: submitHandler })
   }, [submitHandler])
 
-
+  const inputsChange = useCallback((inputId, valorInicial, inicialValido) => {
+    formDispatch({
+      type: FORM_UPDATE,
+      value: valorInicial,
+      isValid: inicialValido,
+      inputId: inputId
+    })
+  }, [formDispatch])
   return (
+
+
+
     <ScrollView>
+
       <View style={styles.form}>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Title</Text>
-          <TextInput style={styles.input} value={title} onChangeText={text => {
-            setTitle(text)
-          }} />
-        </View>
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Image</Text>
-          <TextInput style={styles.input} value={image} onChangeText={text => setImage(text)} />
-        </View>
+        <Input autoCapitalize='sentences'
+          id='title'
+          label='Titulo'
+          erro='Título não pode estar vazio'
+          onInputChange={inputsChange}
+          valorInicial={editedProduct ? editedProduct.title : ''}
+          inicialValido={!!editedProduct}
+          required
+        />
+
+        <Input
+          id='image'
+          label='Imagem'
+          erro='Imagem não pode estar vazio'
+          onInputChange={inputsChange}
+          valorInicial={editedProduct ? editedProduct.imageUrl : ''}
+          inicialValido={!!editedProduct}
+
+          required
+        />
+
+
         {editedProduct ?
           null :
-          <View style={styles.formControl}>
-            <Text style={styles.label}>Price</Text>
-            <TextInput style={styles.input} keyboardType='numeric' value={price} onChangeText={text => {
-              console.log(text)
-              setPrice(text.replace(/[^0-9]/g, ''))
-            }} />
-          </View>}
-        <View style={styles.formControl}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput style={styles.input} value={description} onChangeText={text => setDescription(text)} />
-        </View>
+          (<Input keyboardType='decimal-pad'
+            id='price'
+            onInputChange={inputsChange}
+            isValid='formState.inputValidities.price' label='Preço'
+            erro='Precisa ser um preço acima de 0'
+            required
+            min={0.1}
+          />
+          )
+        }
+
+        <Input
+          id='description'
+          autoCapitalize='sentences'
+          label='Descrição'
+          erro='Descrição não pode estar vazio'
+          onInputChange={inputsChange}
+          multiline numberOfLines={3}
+          valorInicial={editedProduct ? editedProduct.description : ''}
+          inicialValido={!!editedProduct}
+          required
+          minLength={5}
+        />
+
       </View>
+
     </ScrollView>
+
+
   )
 }
 
@@ -93,17 +172,10 @@ const styles = StyleSheet.create({
   form: {
     margin: 20
   },
-  formControl: {
-    width: '100%',
-  },
-  label: {
-    marginVertical: 10,
-  },
-  input: {
-    padding: 5,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
+
+  keyboad: {
+    flex: 1
+  }
 });
 
 export default EditProductScreen;

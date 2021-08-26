@@ -27,8 +27,8 @@ const ProductsOverview = props => {
           title={itemData.item.title}
           price={itemData.item.price.toFixed(2)}
         >
-          <Button title="Details" color={Colors.secondary} onPress={() => { onViewDetail(itemData.item.id, itemData.item.title) }} />
-          <Button title="ADD Cart" color={Colors.secondary} onPress={() => {
+          <Button title="Detalhes" color={Colors.secondary} onPress={() => { onViewDetail(itemData.item.id, itemData.item.title) }} />
+          <Button title="Adicionar no Carrinho" color={Colors.secondary} onPress={() => {
             dispatch(cartActions.addToCart(itemData.item))
           }} />
         </ProductItem>
@@ -38,7 +38,7 @@ const ProductsOverview = props => {
 
 ProductsOverview.navigationOptions = navData => {
   return {
-    headerTitle: "Products",
+    headerTitle: "Ingressos",
     headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
       <Item title='Cart' iconName='md-cart' onPress={() => {
         navData.navigation.navigate('CartScreen')
