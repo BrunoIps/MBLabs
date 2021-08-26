@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Button } from 'react-native';
+import { FlatList, Button, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton'
@@ -15,12 +15,25 @@ const UserProduct = props => {
   }
   const dispatch = useDispatch()
 
+  const btnDelete = (id) => {
+    Alert.alert('Deletar', 'Você tem certeza que deseja deletar este item ?', [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log(),
+        style: 'cancel'
+      },
+      {
+        text: 'Deletar',
+        onPress: () => { dispatch(productsAction.deleteProduct(id)) }
+
+      },
+    ])
+  }
+
   return (
     <FlatList data={userProducts} keyExtractor={item => item.id} renderItem={itemData => <ProductItem onViewDetail={() => { editProduct(itemData.item.id) }} image={itemData.item.imageUrl} title={itemData.item.title} price={itemData.item.price}>
       <Button title="Edit" color={Colors.secondary} onPress={() => { editProduct(itemData.item.id) }} />
-      <Button title="Delete" color={Colors.secondary} onPress={() => {
-        dispatch(productsAction.deleteProduct(itemData.item.id))
-      }}
+      <Button title="Delete" color={Colors.secondary} onPress={() => { btnDelete(itemData.item.id) }}
       />
     </ProductItem>} />
   )
@@ -32,6 +45,11 @@ UserProduct.navigationOptions = navData => {
     headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
       <Item title='Menu' iconName='md-menu' onPress={() => {
         navData.navigation.toggleDrawer()
+      }} />
+    </HeaderButtons>,
+    headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
+      <Item title='ADD' iconName='ios-create' onPress={() => {
+        navData.navigation.navigate('ProductEdit')
       }} />
     </HeaderButtons>,
   }
