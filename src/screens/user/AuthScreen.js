@@ -62,13 +62,26 @@ const AuthScreen = props => {
     }
   }, [erro])
 
+  const load = useCallback(async () => {
+
+
+
+    await dispatch(authAction.fetchManagers())
+
+
+  }, [dispatch])
+
+  useEffect(() => {
+    load()
+  }, [dispatch])
+
   const authHandler = async () => {
     let action;
     let actionMod;
-
     if (isSignup) {
       action = authAction.signup(formState.inputValues.email, formState.inputValues.password, isChecked)
       actionMod = authAction.isSalesMan(formState.inputValues.email, isChecked)
+
     } else {
       action = authAction.login(formState.inputValues.email, formState.inputValues.password, isChecked)
 
@@ -80,16 +93,28 @@ const AuthScreen = props => {
     try {
 
       await dispatch(action)
+      try {
+        await dispatch(actionMod)
+        props.navigation.navigate('Shop')
+      } catch {
+
+      }
+
 
       props.navigation.navigate('Shop')
 
-      await dispatch(actionMod)
     }
     catch (err) {
       setErro(err.message)
       setIsLoading(false)
     }
+
+
+
   }
+
+
+
 
   const inputChangeHandler = useCallback((inputId, valorInicial, inicialValido) => {
     formDispatch({
@@ -100,7 +125,7 @@ const AuthScreen = props => {
     })
   }, [formDispatch])
 
-  const manag = useSelector(state => { return state.auth.isMod })
+
 
   return (
 

@@ -39,7 +39,7 @@ export const addOrder = (cartItems, totalAmount) => {
     const userId = getState().auth.userId;
     const token = getState().auth.token;
     const date = new Date()
-
+    console.log(token)
     const response = await fetch(`https://mbeventos-4e794-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`, {
       method: 'POST',
       headers: {

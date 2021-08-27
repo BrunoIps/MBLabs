@@ -15,6 +15,8 @@ const ProductsOverview = props => {
   const [isRefreshing, setRefreshing] = useState(false)
 
   const products = useSelector(state => { return state.products.availableProducts })
+
+  const manag = useSelector(state => { return state.auth.isMod[0] })
   const dispatch = useDispatch();
 
   const load = useCallback(async () => {
@@ -77,6 +79,7 @@ const ProductsOverview = props => {
   }
 
   return (
+
     <FlatList
       onRefresh={load}
       refreshing={isRefreshing}
@@ -89,6 +92,7 @@ const ProductsOverview = props => {
           title={itemData.item.title}
           price={itemData.item.price.toFixed(2)}
         >
+          {console.log(manag)}
           <Button title="Detalhes" color={Colors.secondary} onPress={() => { onViewDetail(itemData.item.id, itemData.item.title) }} />
           <Button title="Adicionar no Carrinho" color={Colors.secondary} onPress={() => {
             dispatch(cartActions.addToCart(itemData.item))

@@ -5,10 +5,12 @@ export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
+
 export const fetchProducts = () => {
 
   return async (dispatch, getState) => {
     const userId = getState().auth.userId;
+    const token = getState().auth.token;
     try {
       const response = await fetch('https://mbeventos-4e794-default-rtdb.firebaseio.com/products.json');
 
@@ -20,15 +22,17 @@ export const fetchProducts = () => {
       const responseData = await response.json();
 
       const loadProd = [];
+      console.log(getState().auth.token);
 
 
       for (const key in responseData) {
         loadProd.push(new Product(key, responseData[key].ownerId, responseData[key].title, responseData[key].imageUrl, responseData[key].description, responseData[key].price))
       }
+      console.log(loadProd)
 
       dispatch({ type: SET_PRODUCTS, products: loadProd, userId: userId })
     } catch (e) {
-      console.log("opa é aqui");
+      console.log(getState());
       throw e;
     }
   };

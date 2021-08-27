@@ -1,4 +1,5 @@
-import { LOGIN, SIGNUP, CRIA_MODERADOR } from '../actions/auth'
+import { LOGIN, SIGNUP, CRIA_MODERADOR, SET_MANAGERS, AUTHENTICATE } from '../actions/auth'
+import Mod from '../../models/Mod'
 
 const initialState = {
   token: null,
@@ -7,27 +8,44 @@ const initialState = {
 }
 
 const authReducer = (state = initialState, action) => {
+  const isMod = state.isMod;
+
   switch (action.type) {
     case LOGIN:
+      let newModerador = new Mod(action.managerData.email, action.managerData.isManager)
       return {
-
         token: action.token,
         userId: action.userId,
-
+        isMod: isMod.concat(newModerador)
       }
     case SIGNUP:
+      newModerador = new Mod(action.managerData.email, action.managerData.isManager)
       return {
         token: action.token,
         userId: action.userId,
+        isMod: isMod.concat(newModerador)
+      }
 
+    case AUTHENTICATE:
+
+      return {
+        token: action.token,
+        userId: action.userId,
+        ...state,
       }
     case CRIA_MODERADOR:
-      return {
-        token: null,
-        userId: action.userId,
-        isMod: action.isMod
-      }
+      newModerador = new Mod(action.managerData.email, action.managerData.isManager)
 
+      return {
+        token: action.token,
+        userId: action.userId,
+        isMod: isMod.concat(newModerador)
+      }
+    case SET_MANAGERS:
+      return {
+        isMod: action.AllManagers,
+        ...state
+      }
     default:
       return state;
   }

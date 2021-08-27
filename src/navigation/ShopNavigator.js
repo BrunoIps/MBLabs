@@ -13,6 +13,7 @@ import UserProducts from '../screens/user/UserProducts';
 import Colors from '../../constants/Colors'
 import ProductEdit from '../screens/user/EditProducts'
 import AuthScreen from '../screens/user/AuthScreen'
+import StartScreen from '../screens/user/StartScreen'
 
 const defaultOptions = {
   headerStyle: {
@@ -65,7 +66,7 @@ const OrdersNavigator = createStackNavigator({
 })
 
 let conteudo;
-let titulo = true;
+let titulo = false;
 
 titulo ? conteudo = (createDrawerNavigator({
   Produtos: {
@@ -121,6 +122,7 @@ const AuthNavigator = createStackNavigator({
 
 
 const MainNavigator = createSwitchNavigator({
+  Start: StartScreen,
   Auth: AuthNavigator,
   Shop: ShopNavigator
 
