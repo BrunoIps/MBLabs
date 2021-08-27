@@ -43,10 +43,6 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   amount: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16
-  },
-  amount: {
     fontSize: 16,
     fontFamily: 'open-sans',
     color: 'red'

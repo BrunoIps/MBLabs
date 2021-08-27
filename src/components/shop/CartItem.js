@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   defaultText: {
     fontFamily: 'open-sans-bold',
-    fontSize: 16
+    fontSize: 14
   },
   deleteBtn: {
     marginLeft: 20

@@ -63,7 +63,7 @@ const EditProductScreen = props => {
 
 
   const submitHandler = useCallback(() => {
-
+    console.log(prodId)
     if (!formState.formIsValid) {
       Alert.alert('Preencha todos os campos necessários', 'Verifique seus campos', [{ text: 'OK' }])
       return;
@@ -107,8 +107,8 @@ const EditProductScreen = props => {
           label='Titulo'
           erro='Título não pode estar vazio'
           onInputChange={inputsChange}
-          valorInicial={editedProduct ? editedProduct.title : ''}
-          inicialValido={!!editedProduct}
+          valorInicial={editedProduct ? (editedProduct.title) : ''}
+          inicialValido={!editedProduct}
           required
         />
 
@@ -117,8 +117,8 @@ const EditProductScreen = props => {
           label='Imagem'
           erro='Imagem não pode estar vazio'
           onInputChange={inputsChange}
-          valorInicial={editedProduct ? editedProduct.imageUrl : ''}
-          inicialValido={!!editedProduct}
+          valorInicial={editedProduct ? (editedProduct.imageUrl) : ''}
+          inicialValido={!editedProduct}
 
           required
         />
@@ -143,9 +143,9 @@ const EditProductScreen = props => {
           label='Descrição'
           erro='Descrição não pode estar vazio'
           onInputChange={inputsChange}
-          multiline numberOfLines={3}
-          valorInicial={editedProduct ? editedProduct.description : ''}
-          inicialValido={!!editedProduct}
+          numberOfLines={3}
+          valorInicial={editedProduct ? (editedProduct.description) : ''}
+          inicialValido={!editedProduct}
           required
           minLength={5}
         />

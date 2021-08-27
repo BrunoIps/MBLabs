@@ -12,11 +12,11 @@ const inputReducer = (state, action) => {
         value: action.value,
         isValid: action.isValid
       }
-    case FOCUS:
-      return {
-        ...state,
-        touched: true
-      }
+    // case FOCUS:
+    //   return {
+    //     ...state,
+    //     touched: true
+    //   }
 
     default:
       return state;
@@ -28,15 +28,15 @@ const Input = props => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.valorInicial ? props.valorInicial : '',
     isValido: props.inicialValido,
-    touched: false
+    // touched: false
   })
 
   const { onInputChange, id } = props;
 
   useEffect(() => {
-    if (inputState.touched) {
-      onInputChange(id, inputState.value, inputState.isValid);
-    }
+    // if (inputState.touched) {
+    onInputChange(id, inputState.value, inputState.isValid);
+    // }
   }, [inputState, onInputChange, id])
 
   const textHandler = text => {
@@ -62,9 +62,9 @@ const Input = props => {
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid })
   }
 
-  const focusHandler = () => {
-    dispatch({ type: FOCUS })
-  }
+  // const focusHandler = () => {
+  //   dispatch({ type: FOCUS })
+  // }
 
   return (
     <View style={styles.formControl}>
@@ -72,9 +72,9 @@ const Input = props => {
       <TextInput {...props} style={styles.input}
         value={inputState.value}
         onChangeText={textHandler}
-        onBlur={focusHandler}
+
       />
-      {!inputState.isValid && inputState.touched && (<Text style={styles.error}>{props.erro}</Text>)}
+      {!inputState.isValid && (<Text style={styles.error}>{props.erro}</Text>)}
     </View>
   )
 }

@@ -1,10 +1,10 @@
 import { PRODUCTS } from '../../data/temporaryData'
-import { DELETE_PRODUCT, CREATE_PRODUCT, EDIT_PRODUCT } from '../actions/products';
+import { DELETE_PRODUCT, CREATE_PRODUCT, EDIT_PRODUCT, SET_PRODUCTS } from '../actions/products';
 import Product from '../../models/products'
 
 const initialState = {
-  availableProducts: PRODUCTS,
-  userProducts: PRODUCTS.filter(prod => prod.ownerId === 'bd2')
+  availableProducts: [],
+  userProducts: []
 };
 
 const ProductsReducer = (state = initialState, action) => {
@@ -12,9 +12,15 @@ const ProductsReducer = (state = initialState, action) => {
   const manager = state.userProducts;
   const available = state.availableProducts;
   switch (action.type) {
+
+    case SET_PRODUCTS:
+      return {
+        availableProducts: action.products,
+        userProducts: action.products.filter(prod => prod.ownerId === action.userId)
+      }
     case DELETE_PRODUCT:
 
-      console.log(manager[0].ownerId)
+
       return {
         ...state,
         userProducts: manager.filter(product => product.id !== action.pid),
@@ -23,7 +29,7 @@ const ProductsReducer = (state = initialState, action) => {
 
       }
     case CREATE_PRODUCT:
-      const newProduct = new Product(new Date().toString(), 'bd2', action.productData.title, action.productData.imageUrl, action.productData.description, action.productData.price)
+      const newProduct = new Product(new Date().toString(), action.productData.ownerId, action.productData.title, action.productData.imageUrl, action.productData.description, action.productData.price)
 
       return {
         ...state,
