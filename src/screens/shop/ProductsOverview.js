@@ -102,7 +102,7 @@ const ProductsOverview = props => {
           title={itemData.item.title}
           price={itemData.item.price.toFixed(2)}
         >
-          {console.log(manag[1].isManager, emailParam)}
+          {/* {console.log(manag[1].isManager, emailParam)} */}
           <Button title="Detalhes" color={Colors.secondary} onPress={() => { onViewDetail(itemData.item.id, itemData.item.title) }} />
           <Button title="Adicionar no Carrinho" color={Colors.secondary} onPress={() => {
             dispatch(cartActions.addToCart(itemData.item))

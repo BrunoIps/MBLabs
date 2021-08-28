@@ -4,7 +4,7 @@ export const DELETE_PRODUCT = 'DELETE_PRODUCT';
 export const CREATE_PRODUCT = 'CREATE_PRODUCT';
 export const EDIT_PRODUCT = 'EDIT_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
-
+import { API_URL, API_TOKEN } from "../../constants/API_K"
 
 export const fetchProducts = () => {
 
@@ -12,7 +12,7 @@ export const fetchProducts = () => {
     const userId = getState().auth.userId;
     const token = getState().auth.token;
     try {
-      const response = await fetch('https://mbeventos-4e794-default-rtdb.firebaseio.com/products.json');
+      const response = await fetch(`${API_URL}products.json`);
 
 
       if (!response.ok) {
@@ -41,7 +41,7 @@ export const fetchProducts = () => {
 export const deleteProduct = productId => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await fetch(`https://mbeventos-4e794-default-rtdb.firebaseio.com/products/${productId}.json?auth=${token}`, {
+    await fetch(`${API_URL}products/${productId}.json?auth=${token}`, {
       method: 'DELETE',
 
     });
@@ -59,7 +59,7 @@ export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token
     const userId = getState().auth.userId;
-    const response = await fetch(`https://mbeventos-4e794-default-rtdb.firebaseio.com/products.json?auth=${token}`, {
+    const response = await fetch(`${API_URL}products.json?auth=${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ export const editProduct = (id, title, description, imageUrl) => {
     const token = getState().auth.token;
 
     // console.log(getState())
-    const response = await fetch(`https://mbeventos-4e794-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
+    const response = await fetch(`${API_URL}products/${id}.json?auth=${token}`,
       {
         method: 'PATCH',
         headers: {

@@ -68,7 +68,7 @@ const OrdersNavigator = createStackNavigator({
   defaultNavigationOptions: defaultOptions
 })
 
-let toy = false;
+let toy = true;
 
 const ShopNavigator = createDrawerNavigator({
   Produtos: {
@@ -88,7 +88,7 @@ const ShopNavigator = createDrawerNavigator({
       <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
         <DrawerItems {...props} />
         <View style={{ width: '100%', alignItems: "center", justifyContent: 'space-around', flexDirection: 'row' }}>
-          {props.manager && <Button title="Organizador" onPress={() => {
+          {toy && <Button title="Organizador" onPress={() => {
             dispatch(authAction.logout())
             props.navigation.navigate('Organizador')
           }} />}
