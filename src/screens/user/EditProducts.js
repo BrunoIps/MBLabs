@@ -63,7 +63,7 @@ const EditProductScreen = props => {
 
 
   const submitHandler = useCallback(() => {
-    console.log(prodId)
+
     if (!formState.formIsValid) {
       Alert.alert('Preencha todos os campos necessários', 'Verifique seus campos', [{ text: 'OK' }])
       return;

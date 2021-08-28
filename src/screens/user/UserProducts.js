@@ -43,8 +43,8 @@ UserProduct.navigationOptions = navData => {
   return {
     headerTitle: "Organizador",
     headerLeft: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>
-      <Item title='Menu' iconName='md-menu' onPress={() => {
-        navData.navigation.toggleDrawer()
+      <Item title='Menu' iconName='md-backspace' onPress={() => {
+        navData.navigation.navigate('Shop')
       }} />
     </HeaderButtons>,
     headerRight: () => <HeaderButtons HeaderButtonComponent={HeaderButton}>

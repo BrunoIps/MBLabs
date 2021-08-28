@@ -21,15 +21,18 @@ const StartScreen = props => {
 
       const tranformedData = JSON.parse(userData)
       const { token, userId, expirationDate } = tranformedData;
-      const expireDate = new Date(expirationDate)
 
+      const expireDate = new Date(expirationDate)
+      const expiring = expireDate.getTime() - new Date().getTime()
+      console.log(expiring)
       if (expireDate <= new Date() || !token || !userId) {
-        props.navigation.navigate('Auth')
+        props.navigation.navigate('Auth', { email: 'batata' })
         return;
       }
 
-      props.navigation.navigate('Shop')
-      dispatch(authActions.authenticate(userId, token))
+
+      props.navigation.navigate('Shop', { email: 'batata' })
+      dispatch(authActions.authenticate(userId, token, expiring))
 
     }
 

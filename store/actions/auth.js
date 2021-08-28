@@ -3,13 +3,20 @@ export const LOGIN = 'LOGIN'
 export const CRIA_MODERADOR = 'CRIA_MODERADOR'
 export const SET_MANAGERS = 'SET_MANAGERS'
 export const AUTHENTICATE = 'AUTHENTICATE'
+export const LOGOUT = 'LOGOUT'
+
+let timer;
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Mod from '../../models/Mod'
 
-export const authenticate = (userId, token) => {
-  return { type: AUTHENTICATE, userId: userId, token: token }
+export const authenticate = (userId, token, expiryTime) => {
+  return dispatch => {
+    dispatch(setTimeLogout(expiryTime))
+    dispatch({ type: AUTHENTICATE, userId: userId, token: token })
+
+  }
 }
 
 export const signup = (email, password, isManager) => {
@@ -43,13 +50,13 @@ export const signup = (email, password, isManager) => {
       throw new Error(message)
     }
     const responseData = await response.json();
-    console.log(responseData.idToken)
+    // console.log(responseData.idToken)
 
 
 
     dispatch({ type: SIGNUP, token: responseData.idToken, userId: responseData.localId, isManager: isManager, managerData: { email: responseData.email, isManager: isManager } })
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
-    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate)
+    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
   }
 }
 
@@ -74,13 +81,13 @@ export const isSalesMan = (email, isManager) => {
 
     dispatch({ type: CRIA_MODERADOR, managerData: { email: responseData.email, isManager: isManager } })
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
-    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate)
+    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
   }
 }
 
 export const login = (email, password, isManager) => {
   return async (dispatch, getState) => {
-    console.log(getState().auth.token)
+    // console.log(getState().auth.token)
     const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCmAz_6rg3nUq5UmQxYFa1RkvWqwnFBeqY',
       {
         method: 'POST',
@@ -119,7 +126,7 @@ export const login = (email, password, isManager) => {
 
     dispatch({ type: LOGIN, token: responseData.idToken, userId: responseData.localId, managerData: { email: responseData.email, isManager: responseData.isManager } })
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
-    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate)
+    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
   }
 }
 
@@ -138,8 +145,8 @@ export const fetchManagers = () => {
       for (const key in responseData) {
         loadManagers.push(new Mod(responseData[key].email, responseData[key].isManager))
       }
-      console.log(loadManagers)
-      dispatch({ type: 'SET_MANAGERS', allManagers: loadManagers })
+
+      dispatch({ type: 'SET_MANAGERS', managers: loadManagers })
 
     } catch (e) {
       throw e;
@@ -147,10 +154,35 @@ export const fetchManagers = () => {
   }
 }
 
-const saveDataToAsync = (token, userId, expirationDate) => {
+
+export const logout = () => {
+  return dipatch => {
+    clearTimer()
+    AsyncStorage.removeItem('userData')
+  }
+
+  return { type: LOGOUT }
+}
+
+const clearTimer = () => {
+  if (timer) {
+    clearTimeout(timer)
+  }
+}
+
+const setTimeLogout = expirationTime => {
+  return dispatch => {
+    timer = setTimeout(() => {
+      dispatch(logout())
+    }, expirationTime);
+  }
+}
+
+const saveDataToAsync = (token, userId, expirationDate, email) => {
   AsyncStorage.setItem('userData', JSON.stringify({
     token: token,
     userId: userId,
-    expirationDate: expirationDate.toISOString()
+    expirationDate: expirationDate.toISOString(),
+    email: email
   }))
 }

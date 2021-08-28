@@ -7,28 +7,38 @@ import HeaderButton from '../../components/UI/HeaderButton'
 import ProductItem from '../../components/shop/ProductItem';
 import * as cartActions from '../../../store/actions/cart'
 import * as productActions from '../../../store/actions/products';
+import * as authAction from '../../../store/actions/auth'
 import Colors from '../../../constants/Colors'
 
 const ProductsOverview = props => {
+  const emailParam = props.navigation.getParam('email')
   const [isLoading, setIsLoading] = useState(false)
   const [deuErro, setDeuErro] = useState();
   const [isRefreshing, setRefreshing] = useState(false)
 
   const products = useSelector(state => { return state.products.availableProducts })
 
-  const manag = useSelector(state => { return state.auth.isMod[0] })
+
+  const manag = useSelector(state => { return state.auth.isMod })
   const dispatch = useDispatch();
 
   const load = useCallback(async () => {
     setDeuErro(null)
     setRefreshing(true)
     try {
-      await dispatch(productActions.fetchProducts())
+      await dispatch(authAction.fetchManagers())
+      try {
+        await dispatch(productActions.fetchProducts())
+
+      } catch (e) {
+        setDeuErro(e);
+        console.log(e)
+      }
+      setRefreshing(false)
     } catch (e) {
-      setDeuErro(e);
-      console.log(e)
+      throw e;
     }
-    setRefreshing(false)
+
 
   }, [dispatch])
 
@@ -92,7 +102,7 @@ const ProductsOverview = props => {
           title={itemData.item.title}
           price={itemData.item.price.toFixed(2)}
         >
-          {console.log(manag)}
+          {console.log(manag[1].isManager, emailParam)}
           <Button title="Detalhes" color={Colors.secondary} onPress={() => { onViewDetail(itemData.item.id, itemData.item.title) }} />
           <Button title="Adicionar no Carrinho" color={Colors.secondary} onPress={() => {
             dispatch(cartActions.addToCart(itemData.item))

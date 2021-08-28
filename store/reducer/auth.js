@@ -1,4 +1,4 @@
-import { LOGIN, SIGNUP, CRIA_MODERADOR, SET_MANAGERS, AUTHENTICATE } from '../actions/auth'
+import { LOGIN, SIGNUP, CRIA_MODERADOR, SET_MANAGERS, AUTHENTICATE, LOGOUT } from '../actions/auth'
 import Mod from '../../models/Mod'
 
 const initialState = {
@@ -43,9 +43,14 @@ const authReducer = (state = initialState, action) => {
       }
     case SET_MANAGERS:
       return {
-        isMod: action.AllManagers,
-        ...state
+        ...state,
+        isMod: action.managers,
+
       }
+    case LOGOUT:
+      return initialState;
+
+
     default:
       return state;
   }

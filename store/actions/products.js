@@ -22,13 +22,13 @@ export const fetchProducts = () => {
       const responseData = await response.json();
 
       const loadProd = [];
-      console.log(getState().auth.token);
+      // console.log(getState().auth.token);
 
 
       for (const key in responseData) {
         loadProd.push(new Product(key, responseData[key].ownerId, responseData[key].title, responseData[key].imageUrl, responseData[key].description, responseData[key].price))
       }
-      console.log(loadProd)
+      // console.log(loadProd)
 
       dispatch({ type: SET_PRODUCTS, products: loadProd, userId: userId })
     } catch (e) {
@@ -73,7 +73,7 @@ export const createProduct = (title, description, imageUrl, price) => {
       })
     });
 
-    console.log(getState())
+    // console.log(getState())
     const responseData = await response.json();
 
     dispatch({
@@ -94,7 +94,7 @@ export const editProduct = (id, title, description, imageUrl) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
 
-    console.log(getState())
+    // console.log(getState())
     const response = await fetch(`https://mbeventos-4e794-default-rtdb.firebaseio.com/products/${id}.json?auth=${token}`,
       {
         method: 'PATCH',

@@ -1,9 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createSwitchNavigator } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
+import { View, Button, SafeAreaView, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import ProductsOverview from "../screens/shop/ProductsOverview";
 import ProductDetail from '../screens/shop/ProductsDetails';
@@ -14,6 +16,7 @@ import Colors from '../../constants/Colors'
 import ProductEdit from '../screens/user/EditProducts'
 import AuthScreen from '../screens/user/AuthScreen'
 import StartScreen from '../screens/user/StartScreen'
+import * as  authAction from '../../store/actions/auth'
 
 const defaultOptions = {
   headerStyle: {
@@ -65,38 +68,45 @@ const OrdersNavigator = createStackNavigator({
   defaultNavigationOptions: defaultOptions
 })
 
-let conteudo;
-let titulo = false;
+let toy = false;
 
-titulo ? conteudo = (createDrawerNavigator({
+const ShopNavigator = createDrawerNavigator({
   Produtos: {
     screen: ProductsNavigator, navigationOptions: {
       headerTitle: "Produtos",
     }
   },
   Pedidos: OrdersNavigator,
+
 }, {
   contentOptions: {
     activeTintColor: Colors.primary
-  }
-})) : conteudo = createDrawerNavigator({
-  Produtos: {
-    screen: ProductsNavigator, navigationOptions: {
-      headerTitle: "Produtos",
-    }
   },
-  Pedidos: OrdersNavigator,
-  Organizador: {
-    screen: EventManagerNavigator
-  }
-}, {
-  contentOptions: {
-    activeTintColor: Colors.primary
+  contentComponent: props => {
+    const dispatch = useDispatch()
+    return <View style={{ flex: 1, paddingTop: 5 }}>
+      <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+        <DrawerItems {...props} />
+        <View style={{ width: '100%', alignItems: "center", justifyContent: 'space-around', flexDirection: 'row' }}>
+          {props.manager && <Button title="Organizador" onPress={() => {
+            dispatch(authAction.logout())
+            props.navigation.navigate('Organizador')
+          }} />}
+          <Button title="Sair" onPress={() => {
+            dispatch(authAction.logout())
+            props.navigation.navigate('Auth')
+          }} />
+        </View>
+
+
+
+
+      </SafeAreaView>
+
+
+    </View>
   }
 })
-
-
-const ShopNavigator = conteudo
 
 const AuthNavigator = createStackNavigator({
   Auth: {
@@ -124,7 +134,8 @@ const AuthNavigator = createStackNavigator({
 const MainNavigator = createSwitchNavigator({
   Start: StartScreen,
   Auth: AuthNavigator,
-  Shop: ShopNavigator
+  Shop: ShopNavigator,
+  Organizador: EventManagerNavigator
 
 }, {
   defaultNavigationOptions: defaultOptions
