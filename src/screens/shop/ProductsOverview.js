@@ -29,12 +29,13 @@ const ProductsOverview = props => {
     return state.auth.isMod
   })
 
-  const achei = manag.filter(item => {
-    return item.email === email
-  })
 
 
   const isAdm = () => {
+    const achei = manag.filter(item => {
+      return item.email === email
+    })
+
     if (achei.length !== 0) {
       if (achei[0].isManager === false) {
         Alert.alert('Você não é ADM"', "Caso vocẽ seja, favor relogar", [{ text: 'OK' }])

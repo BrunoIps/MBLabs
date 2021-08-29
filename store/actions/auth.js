@@ -12,10 +12,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Mod from '../../models/Mod'
 import { API_URL, API_TOKEN } from "../../constants/API_K"
 
-export const authenticate = (userId, token, expiryTime) => {
+export const authenticate = (userId, token, expiryTime, email) => {
   return dispatch => {
     dispatch(setTimeLogout(expiryTime))
-    dispatch({ type: AUTHENTICATE, userId: userId, token: token })
+    dispatch({ type: AUTHENTICATE, userId: userId, token: token, email: email })
     achei.isManager === false
   }
 }
@@ -63,7 +63,6 @@ export const signup = (email, password, isManager) => {
       throw new Error(message)
     }
     const responseData = await response.json();
-    // console.log(responseData.idToken)
 
 
 
@@ -74,30 +73,6 @@ export const signup = (email, password, isManager) => {
   }
 }
 
-// export const isSalesMan = (email, isManager) => {
-
-//   return async dispatch => {
-
-//     const manager = await fetch(`${API_URL}manager.json`, {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json'
-//       },
-//       body: JSON.stringify({
-//         email: email,
-//         isManager: isManager,
-//       })
-//     });
-
-
-//     const responseManagerData = await manager.json();
-//     console.log('cheguei aqui')
-
-//     dispatch({ type: CRIA_MODERADOR, managerData: { email: responseData.email, isManager: isManager } })
-//     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
-//     saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
-//   }
-// }
 
 export const login = (email, password, isManager) => {
   return async (dispatch, getState) => {

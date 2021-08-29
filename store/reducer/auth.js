@@ -38,7 +38,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         token: action.token,
         userId: action.userId,
-
+        atual: action.email
       }
     case CRIA_MODERADOR:
       newModerador = new Mod(action.managerData.email, action.managerData.isManager)
