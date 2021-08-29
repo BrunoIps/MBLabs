@@ -4,7 +4,8 @@ import Mod from '../../models/Mod'
 const initialState = {
   token: null,
   userId: null,
-  isMod: []
+  isMod: [],
+  atual: null,
 }
 
 const authReducer = (state = initialState, action) => {
@@ -14,24 +15,30 @@ const authReducer = (state = initialState, action) => {
     case LOGIN:
       let newModerador = new Mod(action.managerData.email, action.managerData.isManager)
       return {
+        ...state,
         token: action.token,
         userId: action.userId,
-        isMod: isMod.concat(newModerador)
+        isMod: isMod.concat(newModerador),
+        atual: action.managerData.email
       }
     case SIGNUP:
       newModerador = new Mod(action.managerData.email, action.managerData.isManager)
       return {
+        ...state,
         token: action.token,
         userId: action.userId,
-        isMod: isMod.concat(newModerador)
+        isMod: isMod.concat(newModerador),
+        atual: action.managerData.email,
+
       }
 
     case AUTHENTICATE:
 
       return {
+        ...state,
         token: action.token,
         userId: action.userId,
-        ...state,
+
       }
     case CRIA_MODERADOR:
       newModerador = new Mod(action.managerData.email, action.managerData.isManager)
@@ -39,7 +46,8 @@ const authReducer = (state = initialState, action) => {
       return {
         token: action.token,
         userId: action.userId,
-        isMod: isMod.concat(newModerador)
+        isMod: isMod.concat(newModerador),
+        atual: action.managerData.email
       }
     case SET_MANAGERS:
       return {

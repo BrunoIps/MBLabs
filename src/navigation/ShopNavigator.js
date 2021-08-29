@@ -78,6 +78,7 @@ const ShopNavigator = createDrawerNavigator({
   },
   Pedidos: OrdersNavigator,
 
+
 }, {
   contentOptions: {
     activeTintColor: Colors.primary
@@ -88,10 +89,6 @@ const ShopNavigator = createDrawerNavigator({
       <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
         <DrawerItems {...props} />
         <View style={{ width: '100%', alignItems: "center", justifyContent: 'space-around', flexDirection: 'row' }}>
-          {toy && <Button title="Organizador" onPress={() => {
-            dispatch(authAction.logout())
-            props.navigation.navigate('Organizador')
-          }} />}
           <Button title="Sair" onPress={() => {
             dispatch(authAction.logout())
             props.navigation.navigate('Auth')

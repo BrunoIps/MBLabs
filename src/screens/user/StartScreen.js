@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import * as authActions from '../../../store/actions/auth'
 
 const StartScreen = props => {
+
   const dispatch = useDispatch();
   useEffect(() => {
 
@@ -19,20 +20,26 @@ const StartScreen = props => {
         return;
       }
 
+
+
       const tranformedData = JSON.parse(userData)
       const { token, userId, expirationDate } = tranformedData;
 
+
+
       const expireDate = new Date(expirationDate)
       const expiring = expireDate.getTime() - new Date().getTime()
-      console.log(expiring)
+
+
+
       if (expireDate <= new Date() || !token || !userId) {
-        props.navigation.navigate('Auth', { email: 'batata' })
+        props.navigation.navigate('Auth')
         return;
       }
 
 
-      props.navigation.navigate('Shop', { email: 'batata' })
-      dispatch(authActions.authenticate(userId, token, expiring))
+      props.navigation.navigate('Shop')
+      dispatch(authActions.authenticate(userId, token, expiring, tranformedData.email))
 
     }
 
@@ -45,6 +52,8 @@ const StartScreen = props => {
     </View>
   )
 }
+
+
 
 const styles = StyleSheet.create({
   screen: {

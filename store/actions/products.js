@@ -41,7 +41,7 @@ export const fetchProducts = () => {
 export const deleteProduct = productId => {
   return async (dispatch, getState) => {
     const token = getState().auth.token;
-    await fetch(`${API_URL}products/${productId}.json?auth=${token}`, {
+    await fetch(`${API_URL}products/${productId}.json?`, {
       method: 'DELETE',
 
     });
@@ -59,7 +59,7 @@ export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch, getState) => {
     const token = getState().auth.token
     const userId = getState().auth.userId;
-    const response = await fetch(`${API_URL}products.json?auth=${token}`, {
+    const response = await fetch(`${API_URL}products.json?`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ export const editProduct = (id, title, description, imageUrl) => {
     const token = getState().auth.token;
 
     // console.log(getState())
-    const response = await fetch(`${API_URL}products/${id}.json?auth=${token}`,
+    const response = await fetch(`${API_URL}products/${id}.json?`,
       {
         method: 'PATCH',
         headers: {

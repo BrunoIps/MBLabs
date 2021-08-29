@@ -16,7 +16,7 @@ export const authenticate = (userId, token, expiryTime) => {
   return dispatch => {
     dispatch(setTimeLogout(expiryTime))
     dispatch({ type: AUTHENTICATE, userId: userId, token: token })
-
+    achei.isManager === false
   }
 }
 
@@ -38,6 +38,18 @@ export const signup = (email, password, isManager) => {
         })
       })
 
+
+    const manager = await fetch(`${API_URL}manager.json`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        isManager: isManager,
+      })
+    });
+
     if (!response.ok) {
       const errorResponse = await response.json();
       const errorId = errorResponse.error.message;
@@ -55,36 +67,37 @@ export const signup = (email, password, isManager) => {
 
 
 
-    dispatch({ type: SIGNUP, token: responseData.idToken, userId: responseData.localId, isManager: isManager, managerData: { email: responseData.email, isManager: isManager } })
+    dispatch({ type: SIGNUP, token: responseData.idToken, userId: responseData.localId, isManager: isManager, managerData: { email: email, isManager: isManager } },
+      { type: CRIA_MODERADOR, managerData: { email: email, isManager: isManager } })
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
     saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
   }
 }
 
-export const isSalesMan = (email, isManager) => {
+// export const isSalesMan = (email, isManager) => {
 
-  return async dispatch => {
+//   return async dispatch => {
 
-    const manager = await fetch(`${API_URL}manager.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        isManager: isManager,
-      })
-    });
+//     const manager = await fetch(`${API_URL}manager.json`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify({
+//         email: email,
+//         isManager: isManager,
+//       })
+//     });
 
 
-    const responseData = await manager.json();
-    console.log('cheguei aqui')
+//     const responseManagerData = await manager.json();
+//     console.log('cheguei aqui')
 
-    dispatch({ type: CRIA_MODERADOR, managerData: { email: responseData.email, isManager: isManager } })
-    const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
-    saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
-  }
-}
+//     dispatch({ type: CRIA_MODERADOR, managerData: { email: responseData.email, isManager: isManager } })
+//     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
+//     saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
+//   }
+// }
 
 export const login = (email, password, isManager) => {
   return async (dispatch, getState) => {
@@ -175,7 +188,7 @@ const setTimeLogout = expirationTime => {
   return dispatch => {
     timer = setTimeout(() => {
       dispatch(logout())
-    }, expirationTime);
+    }, expirationTime / 10);
   }
 }
 
