@@ -7,7 +7,10 @@ import * as cartAction from '../../../store/actions/cart'
 import * as ordersActions from '../../../store/actions/orders'
 
 const CartScreen = props => {
+  //Aqui pega o valor total de produtos do carrinho de compras.
   const cartTotalAmount = useSelector(state => state.cart.totalAmount)
+
+  //Aqui pega as informaçoes dos itens adicionados no carrinho
   const cartItem = useSelector(state => {
     const tranformedCartIems = []
     for (const key in state.cart.items) {
@@ -19,8 +22,10 @@ const CartScreen = props => {
         sum: state.cart.items[key].sum
       })
     }
+    //Aqui o ultimo item adicionado no carrinho fica em primeiro na lista
     return tranformedCartIems.sort((a, b) => a.productId > b.productId ? 1 : -1);
   });
+
   const dispatch = useDispatch()
 
   return (

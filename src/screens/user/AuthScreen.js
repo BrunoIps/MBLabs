@@ -10,6 +10,8 @@ import * as authAction from '../../../store/actions/auth'
 
 const FORM_UPDATE = 'FORM_UPDATE'
 
+
+//REDUCER que uso para validar os valores dos inputs 
 const formReducer = (state, action) => {
   if (action.type === FORM_UPDATE) {
     const updatedValue = {

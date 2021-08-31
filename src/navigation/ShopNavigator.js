@@ -16,6 +16,7 @@ import Colors from '../../constants/Colors'
 import ProductEdit from '../screens/user/EditProducts'
 import AuthScreen from '../screens/user/AuthScreen'
 import StartScreen from '../screens/user/StartScreen'
+import Search from '../screens/shop/Search'
 import * as  authAction from '../../store/actions/auth'
 
 const defaultOptions = {
@@ -68,7 +69,17 @@ const OrdersNavigator = createStackNavigator({
   defaultNavigationOptions: defaultOptions
 })
 
-let toy = true;
+
+const SearchNavigator = createStackNavigator({
+  Procurar: {
+    screen: Search
+  }
+}, {
+  navigationOptions: {
+    drawerIcon: drawerConfig => <Ionicons name='search' size={25} color={drawerConfig.tintColor} />
+  },
+  defaultNavigationOptions: defaultOptions
+})
 
 const ShopNavigator = createDrawerNavigator({
   Produtos: {
@@ -77,7 +88,7 @@ const ShopNavigator = createDrawerNavigator({
     }
   },
   Pedidos: OrdersNavigator,
-
+  Procurar: SearchNavigator
 
 }, {
   contentOptions: {
@@ -94,9 +105,6 @@ const ShopNavigator = createDrawerNavigator({
             props.navigation.navigate('Auth')
           }} />
         </View>
-
-
-
 
       </SafeAreaView>
 

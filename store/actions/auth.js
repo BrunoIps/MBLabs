@@ -113,7 +113,7 @@ export const login = (email, password, isManager) => {
     // const managerData = await manager.json();
 
 
-    dispatch({ type: LOGIN, token: responseData.idToken, userId: responseData.localId, managerData: { email: responseData.email, isManager: responseData.isManager } })
+    dispatch({ type: SIGNUP, token: responseData.idToken, userId: responseData.localId, isManager: isManager, managerData: { email: email, isManager: isManager } })
     const expirationDate = new Date(new Date().getTime() + parseInt(responseData.expiresIn) * 1000);
     saveDataToAsync(responseData.idToken, responseData.localId, expirationDate, responseData.email)
   }

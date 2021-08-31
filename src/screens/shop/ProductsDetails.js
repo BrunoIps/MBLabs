@@ -5,10 +5,15 @@ import Colors from '../../../constants/Colors';
 import * as cartActions from '../../../store/actions/cart'
 
 const ProductDetail = props => {
+  //Aqui eu pego as informações que foram paassadas pelo Param 
   const productId = props.navigation.getParam('productId');
+
+  //Aqui eu percorro  todo o meu array de produtos para fitlrar e achar o produto que eu quero ver os detalhes
   const selectedProduct = useSelector(state => {
     return state.products.availableProducts.find(prod => prod.id === productId)
   });
+
+
   const dispatch = useDispatch()
 
   return (

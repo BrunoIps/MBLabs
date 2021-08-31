@@ -8,11 +8,12 @@ import OrderItem from '../../components/shop/OrderItem'
 import * as ordersAction from '../../../store/actions/orders'
 
 const OrdersScreen = props => {
+  //Aqui eu vejo no BD os pedidos feitos pelo usuario
   const orders = useSelector(state => state.orders.orders);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState()
 
-
+  //Carrega os pedidos feitos pelo usuario que estao armazenados no BD e tambem seta a variavel que verifica se a tela esta sendo carregada ou nao 
   const load = useCallback(async () => {
 
     setIsLoading(true)
@@ -26,16 +27,17 @@ const OrdersScreen = props => {
     load()
   }, [dispatch])
 
+
+  //Se ainda estiver carregando mostra esse indicador de atividade
   if (isLoading) {
     return (
-
       <View style={styles.loader}>
         <ActivityIndicator size='large' color='blue' />
-
       </View>
     )
   }
 
+  //Caso de tudo certo ele retonar uma lista com todos os pedidos feitos
   return <FlatList data={orders} keyExtractor={item => item.id} renderItem={itemData => <OrderItem items={itemData.item.items} amount={itemData.item.totalAmount} date={itemData.item.dateString} />} />
 }
 

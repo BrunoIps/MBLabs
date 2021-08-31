@@ -2,7 +2,6 @@ import React, { useReducer, useEffect } from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const INPUT_CHANGE = 'INPUT_CHANGE'
-const FOCUS = 'FOCUS'
 
 const inputReducer = (state, action) => {
   switch (action.type) {
@@ -12,12 +11,6 @@ const inputReducer = (state, action) => {
         value: action.value,
         isValid: action.isValid
       }
-    // case FOCUS:
-    //   return {
-    //     ...state,
-    //     touched: true
-    //   }
-
     default:
       return state;
   }
@@ -34,9 +27,9 @@ const Input = props => {
   const { onInputChange, id } = props;
 
   useEffect(() => {
-    // if (inputState.touched) {
+
     onInputChange(id, inputState.value, inputState.isValid);
-    // }
+
   }, [inputState, onInputChange, id])
 
   const textHandler = text => {
@@ -62,9 +55,7 @@ const Input = props => {
     dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid })
   }
 
-  // const focusHandler = () => {
-  //   dispatch({ type: FOCUS })
-  // }
+
 
   return (
     <View style={styles.formControl}>
